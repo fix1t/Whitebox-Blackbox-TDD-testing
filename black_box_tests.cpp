@@ -133,8 +133,8 @@ TEST_F(TreeAxioms, Axiom2)
     {
         if (node->color == 0)
         {
-            EXPECT_EQ(node->pLeft,1);
-            EXPECT_EQ(node->pRight,1);
+            EXPECT_EQ(node->pLeft->color,1);
+            EXPECT_EQ(node->pRight->color,1);
         }
     }
 }
@@ -143,10 +143,11 @@ TEST_F(TreeAxioms, Axiom3)
     std::vector<Node_t *> nodeVector{};
     tree.GetLeafNodes(nodeVector);
     int countNodes = 0;
-    int countParents = 0;
+    int countAllParents = 0;
     for (auto node : nodeVector)
     {
         countNodes++;
+        int countParents = 0;
         while (node->pParent != nullptr)
         {
             if (node->pParent->color == 1)
@@ -155,10 +156,11 @@ TEST_F(TreeAxioms, Axiom3)
             }
             node = node->pParent;
         }
-        ASSERT_EQ(countParents%countNodes,0);
-        if (countParents == 0)
+        countAllParents += countParents;
+        ASSERT_EQ(countAllParents%countNodes,0);           //<ked pripocitam rovnake cilo, nedostavam zvysok
+        if (countAllParents == 0)
             break;
-        EXPECT_EQ(countParents/countNodes,countParents);
-        
+        EXPECT_EQ(countNodes*countParents, 0);
+    }        
 }
 /*** Konec souboru black_box_tests.cpp ***/
