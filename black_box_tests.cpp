@@ -33,4 +33,132 @@
 //      *STEJNY* pocet cernych uzlu.
 //============================================================================//
 
+class EmptyTree : public ::testing::Test
+{
+protected:
+    BinaryTree tree;
+};
+
+class NonEmptyTree : public ::testing::Test
+{
+protected:
+    virtual void SetUp() 
+    {
+        int values[] = { 10, 85, 15, 70, 20, 60, 30, 50, 65, 80, 90, 40, 5, 55 };
+
+        for(int i = 0; i < 14; ++i)
+            tree.InsertNode(values[i]);
+    }
+    BinaryTree tree;
+};
+
+class TreeAxioms : public ::testing::Test
+{
+protected:
+    BinaryTree tree;
+};
+
+
+
+TEST_F(EmptyTree, InsertNode)
+{
+    auto result = tree.InsertNode(0);
+    EXPECT_TRUE(result.first);
+    EXPECT_EQ(result.second->key,0);
+
+    result = tree.InsertNode(0);
+    EXPECT_FALSE(result.first);
+    EXPECT_EQ(result.second->key,0);
+
+}
+TEST_F(EmptyTree, DeleteNode)
+{
+    auto result = tree.DeleteNode(0);
+    EXPECT_FALSE(result);
+    result = tree.DeleteNode(10);
+    EXPECT_FALSE(result);
+
+}
+TEST_F(EmptyTree, FindNode)
+{
+    auto result = tree.FindNode(0);
+    EXPECT_FALSE(result);
+    result = tree.FindNode(10);
+    EXPECT_FALSE(result);
+}
+TEST_F(NonEmptyTree, InsertNode)
+{
+    auto result = tree.InsertNode(0);
+    EXPECT_TRUE(result.first);
+    EXPECT_EQ(result.second->key,0);
+
+    result = tree.InsertNode(10);
+    EXPECT_FALSE(result.first);
+    EXPECT_EQ(result.second->key,10);
+
+}
+TEST_F(NonEmptyTree, DeleteNode)
+{
+    auto result = tree.DeleteNode(0);
+    EXPECT_FALSE(result);
+    result = tree.DeleteNode(10);
+    EXPECT_TRUE(result);
+
+}
+TEST_F(NonEmptyTree, FindNode)
+{
+    auto result = tree.FindNode(0);
+    EXPECT_FALSE(result);
+    result = tree.FindNode(10);
+    EXPECT_TRUE(result);
+}
+TEST_F(TreeAxioms, Axiom1)
+{
+    std::vector<Node_t *> nodeVector{};
+    tree.GetAllNodes(nodeVector);
+    for (auto node : nodeVector)
+    {
+        if (node->pLeft == nullptr && node->pRight == nullptr)
+        {
+            EXPECT_EQ(node->color,1);
+        }
+    }
+        
+}
+TEST_F(TreeAxioms, Axiom2)
+{
+    std::vector<Node_t *> nodeVector{};
+    tree.GetNonLeafNodes(nodeVector);
+    for (auto node : nodeVector)
+    {
+        if (node->color == 0)
+        {
+            EXPECT_EQ(node->pLeft,1);
+            EXPECT_EQ(node->pRight,1);
+        }
+    }
+}
+TEST_F(TreeAxioms, Axiom3)
+{
+    std::vector<Node_t *> nodeVector{};
+    tree.GetLeafNodes(nodeVector);
+    int countNodes = 0;
+    int countParents = 0;
+    for (auto node : nodeVector)
+    {
+        countNodes++;
+        while (node->pParent != nullptr)
+        {
+            if (node->pParent->color == 1)
+            {
+                countParents++;
+            }
+            node = node->pParent;
+        }
+        ASSERT_EQ(countParents%countNodes,0);
+        if (countParents == 0)
+            break;
+        EXPECT_EQ(countParents/countNodes,countParents);
+        
+}
 /*** Konec souboru black_box_tests.cpp ***/
