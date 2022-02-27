@@ -3,12 +3,12 @@
 // Purpose:     Test Driven Development - priority queue code
 //
 // $NoKeywords: $ivs_project_1 $tdd_code.cpp
-// $Author:     JMENO PRIJMENI <xlogin00@stud.fit.vutbr.cz>
+// $Author:     Gabriel Biel <xbielg00@stud.fit.vutbr.cz>
 // $Date:       $2021-01-04
 //============================================================================//
 /**
  * @file tdd_code.h
- * @author JMENO PRIJMENI
+ * @author Gabriel Biel
  * 
  * @brief Definice rozhrani prioritni fronty.
  */
@@ -95,7 +95,7 @@ public:
     Element_t *GetHead();
 
 protected:
-    Element_t *m_pHead;     ///< Ukazatel na zacatek fronty.
+    Element_t *m_pHead = NULL;     ///< Ukazatel na zacatek fronty.
 };
 
 #endif // TDD_CODE_H_
