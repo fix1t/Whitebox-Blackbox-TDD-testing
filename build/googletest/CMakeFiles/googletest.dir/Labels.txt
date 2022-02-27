@@ -1,0 +1,14 @@
+# Target labels
+ googletest
+# Source files and their labels
+/home/fix/Documents/ivs_project_1_2022/assignment/build/googletest/CMakeFiles/googletest
+/home/fix/Documents/ivs_project_1_2022/assignment/build/googletest/CMakeFiles/googletest.rule
+/home/fix/Documents/ivs_project_1_2022/assignment/build/googletest/CMakeFiles/googletest-complete.rule
+/home/fix/Documents/ivs_project_1_2022/assignment/build/googletest/googletest-prefix/src/googletest-stamp/googletest-install.rule
+/home/fix/Documents/ivs_project_1_2022/assignment/build/googletest/googletest-prefix/src/googletest-stamp/googletest-mkdir.rule
+/home/fix/Documents/ivs_project_1_2022/assignment/build/googletest/googletest-prefix/src/googletest-stamp/googletest-download.rule
+/home/fix/Documents/ivs_project_1_2022/assignment/build/googletest/googletest-prefix/src/googletest-stamp/googletest-update.rule
+/home/fix/Documents/ivs_project_1_2022/assignment/build/googletest/googletest-prefix/src/googletest-stamp/googletest-patch.rule
+/home/fix/Documents/ivs_project_1_2022/assignment/build/googletest/googletest-prefix/src/googletest-stamp/googletest-configure.rule
+/home/fix/Documents/ivs_project_1_2022/assignment/build/googletest/googletest-prefix/src/googletest-stamp/googletest-build.rule
+/home/fix/Documents/ivs_project_1_2022/assignment/build/googletest/googletest-prefix/src/googletest-stamp/googletest-test.rule
