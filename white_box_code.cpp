@@ -3,12 +3,12 @@
 // Purpose:     White Box - matrix class code
 //
 // $NoKeywords: $ivs_project_1 $white_box_code.cpp
-// $Author:     JMENO PRIJMENI <xlogin00@stud.fit.vutbr.cz>
+// $Author:     Gabriel Biel <xbielg00@stud.fit.vutbr.cz>
 // $Date:       $2021-01-04
 //============================================================================//
 /**
  * @file white_box_code.cpp
- * @author JMENO PRIJMENI
+ * @author Gabriel Biel
  * 
  * @brief Definice metod tridy reprezentujici matici.
  */
@@ -46,7 +46,7 @@ bool Matrix::set(size_t row, size_t col, double value)
     return true;
 }
 
-bool Matrix::set(std::vector<std::vector< double > > values)
+bool Matrix::set(std::vector<std::vector< double > > values)        ///< TODO TEST
 {
     bool fit = true;
 
@@ -163,7 +163,7 @@ Matrix Matrix::operator*(const double value) const
     return result;
 }
 
-std::vector<double> Matrix::solveEquation(std::vector<double> b)
+std::vector<double> Matrix::solveEquation(std::vector<double> b)                ///<TODO
 {
     std::vector<double> res = std::vector<double>(matrix.size(), 0);
     
