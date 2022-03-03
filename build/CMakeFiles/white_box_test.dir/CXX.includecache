@@ -21,6 +21,10 @@ gtest/gtest.h
 /home/fix/Documents/ivs_project_1_2022/assignment/gtest/gtest.h
 white_box_code.h
 /home/fix/Documents/ivs_project_1_2022/assignment/white_box_code.h
+vector
+-
+math.h
+-
 
 googletest-master/googletest/include/gtest/gtest-assertion-result.h
 memory

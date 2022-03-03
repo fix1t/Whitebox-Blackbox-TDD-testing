@@ -15,12 +15,15 @@
 
 #include "gtest/gtest.h"
 #include "white_box_code.h"
+#include <vector>
+#include <math.h>
 
 using namespace ::testing;
 class MatrixTest : public Test
 {
 protected:
     Matrix matrix;
+
     Matrix get2x4()
     {
         Matrix matrix = Matrix(2, 4);
@@ -30,13 +33,11 @@ protected:
         });
         return matrix;
     }
-    
     void set2x4()
     {
         matrix = get2x4();
     }
 
-    
     Matrix get4x3()
     {
         Matrix matrix = Matrix(4,3);
@@ -48,7 +49,6 @@ protected:
         });
         return matrix;
     }
-
 
     Matrix get5x5()
     {
@@ -63,7 +63,6 @@ protected:
         return matrix;
     }
 
-
     Matrix get2x2()
     {
         Matrix matrix = Matrix(2,2);
@@ -74,10 +73,7 @@ protected:
 
         return matrix;
     }
-
-    
-
-	};
+};
 
 TEST_F(MatrixTest,constructior)
 {
@@ -298,7 +294,7 @@ TEST_F(MatrixTest,Equation5x5)
     Matrix m5x5 = Matrix(5,5);
     m5x5.set(std::vector<std::vector<double>> {
         
-        {1, 2, 3, 4, 5},
+        {1,2,3,4,5},
         {0,1,5,6,7},
         {0,0,1,3,2},
         {0,0,0,1,2},
@@ -306,8 +302,91 @@ TEST_F(MatrixTest,Equation5x5)
 
     });
     EXPECT_NO_THROW(m5x5.solveEquation({{35,38,17,4,1}}));
-    EXPECT_TRUE(m5x5.solveEquation({35,38,17,4,1}) == (std::vector<double>{5,4,3,2,1}));
+    EXPECT_TRUE(m5x5.solveEquation({35,38,17,4,1}) == (std::vector<double>{47,-26,9,2,1}));
+}
+TEST_F(MatrixTest,Transpose)
+{
+    Matrix m5x5 = Matrix(5,5);
+    m5x5.set(std::vector<std::vector<double>> {
+        
+        {1,2,3,4,5},
+        {0,1,2,3,4},
+        {0,0,1,2,3},
+        {0,0,0,1,2},
+        {0,0,0,0,1},
+
+    });
+    std::vector<std::vector<double>> result =
+    {
+        {1,0,0,0,0},
+        {2,1,0,0,0},
+        {3,2,1,0,0},
+        {4,3,2,1,0},
+        {5,4,3,2,1},
+    };
+    Matrix m5x5t(5,5);
+    m5x5t.set(result);
+    EXPECT_NO_THROW(m5x5.transpose());
+    EXPECT_TRUE(m5x5.transpose() == m5x5t);
 }
 
+TEST_F(MatrixTest,Inverse2x2)
+{
+    Matrix m2x2 = Matrix(2,2);
+    m2x2.set(std::vector<std::vector<double>> 
+    {
+        {2,2},
+        {1,2},
+    });
+    Matrix res2x2 = Matrix(2,2);
+    res2x2.set(std::vector<std::vector<double>> 
+    {
+        {1,-1},
+        {-0.5,1},
+    });
+    EXPECT_NO_THROW(m2x2.inverse());
+    EXPECT_TRUE(m2x2.inverse() == res2x2);
+}
 
+TEST_F(MatrixTest,Inverse3x3)
+{
+    Matrix m3x3 = Matrix(3,3);
+    m3x3.set(std::vector<std::vector<double>> 
+    {
+        {1,1,1},
+        {6,5,4},
+        {13,10,8},
+    });
+    Matrix res3x3 = Matrix(3,3);
+    res3x3.set(std::vector<std::vector<double>> 
+    {
+        {0,-2,1},
+        {-4,5,-2},
+        {5,-3,1},
+    });
+    EXPECT_NO_THROW(m3x3.inverse());
+    EXPECT_TRUE(m3x3.inverse() == res3x3);
+}
+
+TEST_F(MatrixTest,InverseGeneral)
+{
+    Matrix m5x5 = Matrix(5,5);
+    m5x5.set(std::vector<std::vector<double>> 
+    {
+        {1,2,3,4,5},
+        {0,1,2,3,4},
+        {0,0,1,2,3},
+        {0,0,0,1,2},
+        {0,0,0,0,1},
+    });
+    EXPECT_ANY_THROW(m5x5.inverse());
+    Matrix m3x3(2,2);
+    m3x3.set(std::vector<std::vector<double>> 
+    {
+        {2,5,7},
+        {6,3,4},
+        {0,0,0},
+    }); 
+    EXPECT_ANY_THROW(m3x3.inverse());
+}
 /*** Konec souboru white_box_tests.cpp ***/
