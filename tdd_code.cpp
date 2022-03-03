@@ -4,7 +4,7 @@
 //
 // $NoKeywords: $ivs_project_1 $tdd_code.cpp
 // $Author:     Gabriel Biel <xbielg00@stud.fit.vutbr.cz>
-// $Date:       $2021-01-04
+// $Date:       $2022.03.03
 //============================================================================//
 /**
  * @file tdd_code.cpp
@@ -17,20 +17,6 @@
 #include <stdio.h>
 
 #include "tdd_code.h"
-
-//============================================================================//
-// ** ZDE DOPLNTE IMPLEMENTACI **
-//
-// Zde doplnte implementaci verejneho rozhrani prioritni fronty (Priority Queue)
-// 1. Verejne rozhrani fronty specifikovane v: tdd_code.h (sekce "public:")
-//    - Konstruktor (PriorityQueue()), Destruktor (~PriorityQueue())
-//    - Metody Insert/Remove/Find/GetHead ...
-//    - Pripadne vase metody definovane v tdd_code.h (sekce "protected:")
-//
-// Cilem je dosahnout plne funkcni implementace prioritni fronty implementovane
-// pomoci tzv. "singly linked list", ktera bude splnovat dodane testy
-// (tdd_tests.cpp).
-//============================================================================//
 
 PriorityQueue::PriorityQueue()
 {

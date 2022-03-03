@@ -4,7 +4,7 @@
 //
 // $NoKeywords: $ivs_project_1 $white_box_code.cpp
 // $Author:     Gabriel BIel <xbielg00@stud.fit.vutbr.cz>
-// $Date:       $2021-01-04
+// $Date:       $2022.03.03
 //============================================================================//
 /**
  * @file white_box_tests.cpp
@@ -57,8 +57,8 @@ protected:
             {1, 2, 3, 4, 5},
             {1.1, 2.1, 3.1, 4.1, 5.1},
             {-5.2, -4.2, -3.2, -2.2, -1.2},
-            {0, 0 ,0 ,0 ,1},
-            {999,999,999,0,0}
+            {1,0,1,0},
+            {2,2,2,3}
         });
         return matrix;
     }
@@ -132,6 +132,7 @@ TEST_F(MatrixTest,SetterGetter)
 
 TEST_F(MatrixTest,SetVector)
 {
+    /* vkladanie spravny pocet hodnot */
     Matrix m3x3{3,3};
     std::vector<std::vector<double>> values9 =   
     {
@@ -140,6 +141,7 @@ TEST_F(MatrixTest,SetVector)
         {7,8,9},
     };
     EXPECT_EQ(m3x3.set(values9),true);
+    /* vkladanie viac hodnot */
     std::vector<std::vector<double>> values10 =   
     {
         {1,2,3},
@@ -147,6 +149,7 @@ TEST_F(MatrixTest,SetVector)
         {7,8,9},
         {11},
     };
+    /* vkladanie menej hodnot */
     std::vector<std::vector<double>> values5 =   
     {
         {1,2,3,4,5}
@@ -157,36 +160,53 @@ TEST_F(MatrixTest,SetVector)
 
 TEST_F(MatrixTest,OperatorEq)
 {
+    /* prazdne matice */
     Matrix m3x3{3,3};
     Matrix m3x3b{3,3};
     EXPECT_TRUE(m3x3 == m3x3b);
+    /* prazdna x plna */
     m3x3.set(0,0,1);
     EXPECT_FALSE(m3x3 == m3x3b);
-    Matrix m3x3c{3,4};
-    EXPECT_ANY_THROW(m3x3 == m3x3c);
+    /* matice nemaju rovnaku velkost */
+    Matrix m3x4{3,4};
+    Matrix m4x3{4,3};
+    EXPECT_ANY_THROW(m3x3 == m3x4);
+    EXPECT_ANY_THROW(m3x3 == m4x3);
+    EXPECT_ANY_THROW(m4x3 == m3x4);
 }
 TEST_F(MatrixTest,OperatorAdd)
 {
+    /* prazdne matice */
     Matrix m3x3{3,3};
     Matrix m3x3b{3,3};
     EXPECT_EQ(m3x3 + m3x3b,m3x3);
+    /* rozdielne matice */
     m3x3.set(0,0,1);
     EXPECT_EQ((m3x3 + m3x3b),m3x3);
-    Matrix m3x3c{3,4};
-    EXPECT_ANY_THROW(m3x3 + m3x3c);
+
+    Matrix m3x4{3,4};
+    Matrix m4x3{4,3};
+    EXPECT_ANY_THROW(m3x3 + m3x4);
+    EXPECT_ANY_THROW(m3x3 + m4x3);
+    EXPECT_ANY_THROW(m4x3 + m3x4);
 }
 TEST_F(MatrixTest,OperatorMultiply)
 {
+    /* prazdne matice */
     Matrix m3x3{3,3};
     Matrix m3x3b{3,3};
     EXPECT_EQ(m3x3 * m3x3b,m3x3);
+    /* rozdielne matice */
     m3x3.set(0,0,1);
     EXPECT_TRUE((m3x3 * m3x3b) == m3x3b);
     EXPECT_FALSE((m3x3 * m3x3b) == m3x3);
-    Matrix m3x3c{3,4};
-    EXPECT_NO_THROW(m3x3 * m3x3c);
-    Matrix m3x3d{4,3};
-    EXPECT_ANY_THROW(m3x3 * m3x3d);
+    /* matice roznych velkosti */
+    Matrix m3x4{3,4};
+    Matrix m4x3{4,3};
+    EXPECT_NO_THROW(m3x3 * m3x4);
+    EXPECT_NO_THROW(m4x3 * m3x4);
+    EXPECT_NO_THROW(m3x4 * m4x3);
+    EXPECT_ANY_THROW(m3x3 * m4x3);
 }
 TEST_F(MatrixTest,OperatorMultiplyByConst)
 {
@@ -370,6 +390,7 @@ TEST_F(MatrixTest,Inverse3x3)
 
 TEST_F(MatrixTest,InverseGeneral)
 {
+    /* maximalni velkost matice < 4 */
     Matrix m5x5 = Matrix(5,5);
     m5x5.set(std::vector<std::vector<double>> 
     {
@@ -380,6 +401,7 @@ TEST_F(MatrixTest,InverseGeneral)
         {0,0,0,0,1},
     });
     EXPECT_ANY_THROW(m5x5.inverse());
+    /* matica nesmie byt singularna */
     Matrix m3x3(2,2);
     m3x3.set(std::vector<std::vector<double>> 
     {
