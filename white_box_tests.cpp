@@ -16,40 +16,93 @@
 #include "gtest/gtest.h"
 #include "white_box_code.h"
 
-//============================================================================//
-// ** ZDE DOPLNTE TESTY **
-//
-// Zde doplnte testy operaci nad maticemi. Cilem testovani je:
-// 1. Dosahnout maximalniho pokryti kodu (white_box_code.cpp) testy.
-// 2. Overit spravne chovani operaci nad maticemi v zavislosti na rozmerech 
-//    matic.
-//============================================================================//
-
-class matrix1x1 : public ::testing::Test
+using namespace ::testing;
+class MatrixTest : public Test
 {
 protected:
-    Matrix m{};
+    Matrix matrix;
+    Matrix get2x4()
+    {
+        Matrix matrix = Matrix(2, 4);
+        matrix.set(std::vector<std::vector<double>> {
+            {5,10,5,10},
+            {1,2,3,4},
+        });
+        return matrix;
+    }
     
-public:
-};
+    void set2x4()
+    {
+        matrix = get2x4();
+    }
 
-TEST(GeneralTests,constructior)
+    
+    Matrix get4x3()
+    {
+        Matrix matrix = Matrix(4,3);
+        matrix.set(std::vector<std::vector<double>> {
+            {20, 20, 1},
+            {30, 1, 0},
+            {1, 0, 0},
+            {1, 1, 1},
+        });
+        return matrix;
+    }
+
+
+    Matrix get5x5()
+    {
+        Matrix matrix = Matrix(5,5);
+        matrix.set(std::vector<std::vector<double>> {
+            {1, 2, 3, 4, 5},
+            {1.1, 2.1, 3.1, 4.1, 5.1},
+            {-5.2, -4.2, -3.2, -2.2, -1.2},
+            {0, 0 ,0 ,0 ,1},
+            {999,999,999,0,0}
+        });
+        return matrix;
+    }
+
+
+    Matrix get2x2()
+    {
+        Matrix matrix = Matrix(2,2);
+        matrix.set(std::vector<std::vector<double>> {
+            {2,1},
+            {3,4},
+        });
+
+        return matrix;
+    }
+
+    
+
+	};
+
+TEST_F(MatrixTest,constructior)
 {
-    Matrix m1x1{};
-    EXPECT_EQ(m1x1.get(0,0),0);
-    Matrix m3x3{3,3};
+    /* prazdna matica */
+    EXPECT_NO_THROW(Matrix m1x1());
+    EXPECT_NO_THROW(Matrix m3x3(3,3));
+    EXPECT_NO_THROW(Matrix m3x3(50,3));
+    EXPECT_NO_THROW(Matrix m3x3(3,50));
+    Matrix m3x3(3,3);
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 3; j++)
             EXPECT_EQ(m3x3.get(i,j),0);
     }
+    /* neplatna matica */
     EXPECT_ANY_THROW(Matrix m3x3(-5,3));
     EXPECT_ANY_THROW(Matrix m3x3(3,-5));
     EXPECT_ANY_THROW(Matrix m3x3(0,0));
+    EXPECT_ANY_THROW(Matrix m3x3(1,0));
+    EXPECT_ANY_THROW(Matrix m3x3(0,1));
 }
-TEST(GeneralT,SetterGetter)
+TEST_F(MatrixTest,SetterGetter)
 {
-    Matrix m3x3{3,3};
+    /* funkcnost */
+    Matrix m3x3(3,3);
     for (int i = 0; i < 6; i++)
     {
         for (int j = 0; j < 6; j++)
@@ -67,20 +120,46 @@ TEST(GeneralT,SetterGetter)
             }
         }
     }
+    /* zle zadanie parametrov set */
+    EXPECT_FALSE(m3x3.set(4,2,1));
+    EXPECT_FALSE(m3x3.set(2,4,1));
+    EXPECT_FALSE(m3x3.set(5,0,1));
+    EXPECT_FALSE(m3x3.set(0,3,1));
+    EXPECT_FALSE(m3x3.set(-1,3,1));
+    /* zle zadanie parametrov get */
+    EXPECT_ANY_THROW(m3x3.get(4,2));
+    EXPECT_ANY_THROW(m3x3.get(2,4));
+    EXPECT_ANY_THROW(m3x3.get(5,0));
+    EXPECT_ANY_THROW(m3x3.get(0,3));
+    EXPECT_ANY_THROW(m3x3.get(-1,3));
 }
 
-TEST(GeneralT,SetVector)
+TEST_F(MatrixTest,SetVector)
 {
-    /* double values9[9] = {1.6 ,2.3 ,0.5 , 2.7, 56.1 ,1.2,1.3,1.5,2.2};
     Matrix m3x3{3,3};
-
-    EXPECT_TRUE(m3x3.set(values9));
-    double values10 [10]= {1.6 ,2.3 ,0.5 , 2.7, 56.1 ,1.2,1.3,1.5,2.2,2.3};
+    std::vector<std::vector<double>> values9 =   
+    {
+        {1,2,3},
+        {4,5,6},
+        {7,8,9},
+    };
+    EXPECT_EQ(m3x3.set(values9),true);
+    std::vector<std::vector<double>> values10 =   
+    {
+        {1,2,3},
+        {4,5,6},
+        {7,8,9},
+        {11},
+    };
+    std::vector<std::vector<double>> values5 =   
+    {
+        {1,2,3,4,5}
+    };
     EXPECT_EQ(m3x3.set(values10),false);
- */
+    EXPECT_EQ(m3x3.set(values5),false);
 }
 
-TEST(GeneralT,OperatorEq)
+TEST_F(MatrixTest,OperatorEq)
 {
     Matrix m3x3{3,3};
     Matrix m3x3b{3,3};
@@ -90,7 +169,7 @@ TEST(GeneralT,OperatorEq)
     Matrix m3x3c{3,4};
     EXPECT_ANY_THROW(m3x3 == m3x3c);
 }
-TEST(GeneralT,OperatorAdd)
+TEST_F(MatrixTest,OperatorAdd)
 {
     Matrix m3x3{3,3};
     Matrix m3x3b{3,3};
@@ -100,7 +179,7 @@ TEST(GeneralT,OperatorAdd)
     Matrix m3x3c{3,4};
     EXPECT_ANY_THROW(m3x3 + m3x3c);
 }
-TEST(GeneralT,OperatorMulti)
+TEST_F(MatrixTest,OperatorMultiply)
 {
     Matrix m3x3{3,3};
     Matrix m3x3b{3,3};
@@ -113,7 +192,7 @@ TEST(GeneralT,OperatorMulti)
     Matrix m3x3d{4,3};
     EXPECT_ANY_THROW(m3x3 * m3x3d);
 }
-TEST(GeneralT,OperatorMultiConst)
+TEST_F(MatrixTest,OperatorMultiplyByConst)
 {
     Matrix m3x3{3,3};
     Matrix m3x3b{3,3};
@@ -135,7 +214,99 @@ TEST(GeneralT,OperatorMultiConst)
         }
     }
     m3x3b.set(0,0,12);
-    EXPECT_FALSE((m3x3 * 2) == m3x3b);
+    EXPECT_TRUE((m3x3 * 2) == m3x3b);
+}
+
+TEST_F(MatrixTest, EquationGeneral)
+	{
+		/* matica  nesmie mat determinant == 0 */
+		matrix = Matrix(3,3);
+		matrix.set(std::vector<std::vector<double>> {
+			{1,1,1},
+			{1,2,3},
+            {2,2,2}
+		});
+		EXPECT_ANY_THROW(matrix.solveEquation(std::vector<double> {1,1,1}));
+
+		/* matica musi byt stvorcova */
+		EXPECT_ANY_THROW(get2x4().solveEquation(std::vector<double> {0, 0}));
+		EXPECT_ANY_THROW(get4x3().solveEquation(std::vector<double> {0, 0, 0, 0}));
+        EXPECT_ANY_THROW(get4x3().solveEquation(std::vector<double> {0, 0, 0}));
+		
+        get5x5();
+		/* pocet prvkov pravej rovnice sa musi rovnat poctu riadkov matice */
+		EXPECT_ANY_THROW(matrix.solveEquation(std::vector<double> {}));
+		EXPECT_ANY_THROW(matrix.solveEquation(std::vector<double>(10,5)));
+		EXPECT_ANY_THROW(matrix.solveEquation(std::vector<double>(5,5)));
+		EXPECT_ANY_THROW(matrix.solveEquation(std::vector<double>(2,1)));
+
+
+
+	}
+TEST_F(MatrixTest,Equation1x1)
+{
+    Matrix m1x1 = Matrix();
+    m1x1.set(0,0,1);
+    EXPECT_NO_THROW(m1x1.solveEquation(std::vector<double> {{1}}));
+    EXPECT_EQ(m1x1.solveEquation(std::vector<double> {{1}}),std::vector<double>{{1}});
+}
+TEST_F(MatrixTest,Equation2x2)
+{
+    Matrix m2x2 = Matrix(2,2);
+    m2x2.set(std::vector<std::vector<double>> 
+    {
+        {2, 1},
+        {3, 4},
+    });
+    EXPECT_NO_THROW(m2x2.solveEquation(std::vector<double> {1,2}));
+    EXPECT_TRUE(m2x2.solveEquation(std::vector<double> {3,7}) == (std::vector<double>{1,1}));
+}
+
+TEST_F(MatrixTest,Equation3x3)
+{
+    Matrix m3x3(3,3);
+    std::vector<std::vector<double> > values =
+    {
+        {1, 0, 0},
+        {0, 1, 0},
+        {0, 0, 1},
+    };
+    m3x3.set(values);
+    std::vector<double> result =
+    {
+        {1,1,-2}
+    };
+    EXPECT_NO_THROW(m3x3.solveEquation(result));
+    EXPECT_EQ(m3x3.solveEquation(result),result);
+
+    values = 
+    {
+        {1,1,1},
+        {0,1,1},
+        {0,0,1}
+    };
+    m3x3.set(values);
+    result = 
+    {
+        {6,3,1}
+    };
+    EXPECT_NO_THROW(m3x3.solveEquation({{10,4,1}}));
+    EXPECT_EQ(m3x3.solveEquation({10,4,1}),result);
+}
+TEST_F(MatrixTest,Equation5x5)
+{
+    Matrix m5x5 = Matrix(5,5);
+    m5x5.set(std::vector<std::vector<double>> {
+        
+        {1, 2, 3, 4, 5},
+        {0,1,5,6,7},
+        {0,0,1,3,2},
+        {0,0,0,1,2},
+        {0,0,0,0,1},
+
+    });
+    EXPECT_NO_THROW(m5x5.solveEquation({{35,38,17,4,1}}));
+    EXPECT_TRUE(m5x5.solveEquation({35,38,17,4,1}) == (std::vector<double>{5,4,3,2,1}));
 }
 
 
