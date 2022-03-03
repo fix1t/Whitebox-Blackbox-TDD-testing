@@ -6,14 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/fix/Documents/ivs_project_1_2022/assignment/white_box_code.cpp
-iostream
--
-stdexcept
--
-white_box_code.h
-/home/fix/Documents/ivs_project_1_2022/assignment/white_box_code.h
-
 /home/fix/Documents/ivs_project_1_2022/assignment/white_box_code.h
 utility
 -
